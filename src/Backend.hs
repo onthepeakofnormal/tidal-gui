@@ -18,7 +18,7 @@ import Control.Monad.Except
 import Sound.Tidal.Context as T hiding (mute,solo,(#),s)
 import Sound.Tidal.ID
 
-import Sound.OSC.FD as O
+import Sound.Osc.Fd as O
 
 import Text.Parsec  (parse)
 
@@ -405,11 +405,11 @@ actOSC env (Just (Message "/eval/all" [])) = runI interpretCommandsManyI (env {e
 actOSC env (Just (Message "/eval/block" [Int32 line])) = runI interpretCommandsManyI (env {evalModeE = B, lineE = Just $ (fromIntegral line) - 1 }) >> return env
 actOSC env (Just (Message "/eval/line" [Int32 line])) = runI interpretCommandsManyI (env {evalModeE = L, lineE = Just $ (fromIntegral line) - 1 }) >> return env
 actOSC env (Just (Message "/go/line" [Int32 line])) = (runUI (windowE env) $ runFunction $ ffi "(document.querySelector(\"#editor0 + .CodeMirror\").CodeMirror).setCursor(%1)" (fromIntegral line :: Int)) >> return env
-actOSC env (Just (Message "/mute" [ASCII_String s])) = (runUI (windowE env) $ (liftIO $ muteP (streamE env) (ID $ ascii_to_string s)) >> updateDisplay (streamE env)) >> return env
-actOSC env (Just (Message "/print" [ASCII_String s])) = (runUI (windowE env) $ getOutputEl # (set UI.text $ "Recieved message: " ++ ascii_to_string s)) >> return env
-actOSC env (Just (Message "/hydra/set" [ASCII_String s1, ASCII_String s2])) = (runUI (windowE env) $ hydraJob (ascii_to_string s1 ++ "=" ++ ascii_to_string s2)) >> return env
-actOSC env (Just (Message "/tidal/incBy" [ASCII_String s1, Double d])) = (runUI (windowE env) $ liftIO $ increaseBy (streamE env) (ascii_to_string s1) d) >> return env
-actOSC env (Just (Message "/action" [ASCII_String s])) = (runI (statI (-1) (-1) (ascii_to_string s)) env) >> return env
+actOSC env (Just (Message "/mute" [AsciiString s])) = (runUI (windowE env) $ (liftIO $ muteP (streamE env) (ID $ ascii_to_string s)) >> updateDisplay (streamE env)) >> return env
+actOSC env (Just (Message "/print" [AsciiString s])) = (runUI (windowE env) $ getOutputEl # (set UI.text $ "Recieved message: " ++ ascii_to_string s)) >> return env
+actOSC env (Just (Message "/hydra/set" [AsciiString s1, AsciiString s2])) = (runUI (windowE env) $ hydraJob (ascii_to_string s1 ++ "=" ++ ascii_to_string s2)) >> return env
+actOSC env (Just (Message "/tidal/incBy" [AsciiString s1, Double d])) = (runUI (windowE env) $ liftIO $ increaseBy (streamE env) (ascii_to_string s1) d) >> return env
+actOSC env (Just (Message "/action" [AsciiString s])) = (runI (statI (-1) (-1) (ascii_to_string s)) env) >> return env
 actOSC env (Just (Message "/loadTemplate" [])) = runI loadTemplate env >> return env
 actOSC env (Just m) = (runUI (windowE env) $ getOutputEl # (set UI.text $ "Unhandeled OSC message: " ++ show m)) >> return env
 actOSC env _ = return env
