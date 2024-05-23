@@ -1,1 +1,1 @@
-const config = {defPath: "" }
+const config = {defPath: "", tempPath: ""}
