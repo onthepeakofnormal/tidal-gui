@@ -29,8 +29,8 @@ executable tidal-gui
                -dynamic
   build-depends:       base,
                        threepenny-gui,
-                       hint == 0.9.0.7,
-                       tidal == 1.9.5,
+                       hint == 0.9.0.8,
+                       tidal == 1.10.0,
                        parsec,
                        mtl,
                        filepath,

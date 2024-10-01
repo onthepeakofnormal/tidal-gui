@@ -3,4 +3,10 @@ allow-newer: snap-server:base, io-streams-haproxy:base,
              websockets-snap:bytestring, snap-server:time,
              io-streams-haproxy:attoparsec, io-streams-haproxy:bytestring
 ignore-project: False
-
+source-repository-package
+     type: git
+     location: /home/martin/git/Tidal
+source-repository-package
+     type: git
+     location: /home/martin/git/Tidal
+     subdir: tidal-link
